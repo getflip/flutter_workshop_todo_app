@@ -12,6 +12,7 @@ class TodoDTO with _$TodoDTO {
     required String title,
     String? description,
     String? imageUrl,
+    bool? isDone,
     int? createdAtSeconds,
   }) = _TodoDTO;
 

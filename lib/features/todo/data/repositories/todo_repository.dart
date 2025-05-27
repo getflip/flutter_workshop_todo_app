@@ -56,6 +56,7 @@ class TodoRepository {
         title: dto.title,
         description: dto.description,
         imageUrl: dto.imageUrl,
+        isDone: dto.isDone,
         createdAt: createdAt,
       );
     } catch (e) {

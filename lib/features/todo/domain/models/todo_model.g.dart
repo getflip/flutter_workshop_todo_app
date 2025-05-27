@@ -12,6 +12,7 @@ _$TodoModelImpl _$$TodoModelImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String?,
       imageUrl: json['imageUrl'] as String?,
+      isDone: json['isDone'] as bool?,
       createdAt:
           json['createdAt'] == null
               ? null
@@ -24,5 +25,6 @@ Map<String, dynamic> _$$TodoModelImplToJson(_$TodoModelImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'imageUrl': instance.imageUrl,
+      'isDone': instance.isDone,
       'createdAt': instance.createdAt?.toIso8601String(),
     };

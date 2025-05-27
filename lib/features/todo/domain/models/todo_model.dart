@@ -14,6 +14,7 @@ class TodoModel with _$TodoModel {
     required String title,
     String? description,
     String? imageUrl,
+    bool? isDone,
     DateTime? createdAt,
   }) = _TodoModel;
 
