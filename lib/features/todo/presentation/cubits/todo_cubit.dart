@@ -30,4 +30,30 @@ class TodoCubit extends Cubit<TodoState> {
       emit(TodosError(message: e.toString()));
     }
   }
+
+  Future<void> toggleTodo(String id, bool isDone) async {
+    try {
+      // Optimistic update - update UI immediately
+      if (state is TodosLoaded) {
+        final currentTodos = (state as TodosLoaded).todos;
+        final updatedTodos = currentTodos.map((todo) {
+          if (todo.id == id) {
+            return todo.copyWith(isDone: isDone);
+          }
+          return todo;
+        }).toList();
+        emit(TodosLoaded(todos: updatedTodos));
+      }
+
+      // Make API call
+      await _repository.updateTodo(id, isDone);
+
+      // Refresh from server to ensure consistency
+      await loadTodos();
+    } catch (e) {
+      // Revert optimistic update on error
+      await loadTodos();
+      emit(TodosError(message: e.toString()));
+    }
+  }
 }

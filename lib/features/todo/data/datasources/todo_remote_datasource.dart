@@ -60,6 +60,34 @@ class TodoRemoteDataSource {
     }
   }
 
+  Future<TodoDTO> updateTodo(String id, bool isDone) async {
+    try {
+      final updatedTodo = {'id': id, 'isDone': isDone};
+
+      log('Sending todo: ${json.encode(updatedTodo)}');
+
+      final response = await _client.patch(
+        Uri.parse('$baseUrl/todo/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'id': id, 'isDone': isDone}),
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to create todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error adding todo: $e');
+      throw Exception('Failed to create todo: $e');
+    }
+  }
+
   // For local client-side ID generation
   String generateId() {
     return const Uuid().v4();

@@ -17,29 +17,10 @@ class TodoListScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Todo App')),
       body: BlocBuilder<TodoCubit, TodoState>(
         builder: (context, state) {
-          if (state is TodosLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is TodosLoaded) {
-            final todos = state.todos;
-
-            if (todos.isEmpty) {
-              return const Center(
-                child: Text(
-                  'No todos yet!\nTap the + button to add one.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                ),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: todos.length,
-              itemBuilder: (context, index) {
-                return TodoItem(todo: todos[index]);
-              },
-            );
-          } else if (state is TodosError) {
-            return Center(child: Text('Error: ${state.message}', style: const TextStyle(color: Colors.red)));
+          switch (state) {
+            case TodosLoading(): return _loadingScreen();
+            case TodosLoaded(): return _loadedScreen(state);
+            case TodosError(): return _errorScreen(state);
           }
 
           return const Center(child: Text('Unknown state'));
@@ -58,4 +39,40 @@ class TodoListScreen extends StatelessWidget {
       ),
     );
   }
+
+  Center _errorScreen(TodosError state) {
+    return Center(child: Text('Error: ${state.message}', style: const TextStyle(color: Colors.red)));
+  }
+
+  Widget _loadedScreen(TodosLoaded state) {
+    final todos = state.todos;
+
+    if (todos.isEmpty) {
+      return const Center(
+        child: Text(
+          'No todos yet!\nTap the + button to add one.',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 18),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: todos.length,
+      itemBuilder: (context, index) {
+        return TodoItem(
+          todo: todos[index],
+          onToggle: (bool isDone) {
+            context.read<TodoCubit>().toggleTodo(todos[index].id, isDone);
+          },
+        );
+      },
+    );
+  }
+
+  Center _loadingScreen() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+
 }

@@ -4,8 +4,9 @@ import '../../domain/models/todo_model.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoModel todo;
+  final ValueChanged<bool>? onToggle;
 
-  const TodoItem({super.key, required this.todo});
+  const TodoItem({super.key, required this.todo, required this.onToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +88,26 @@ class TodoItem extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Switch(
+                  value: todo.isDone,
+                  onChanged: onToggle,
+                  activeColor: Colors.green,
+                  activeTrackColor: Colors.green.withValues(alpha: 0.3)
+                ),
+                Text(
+                  todo.isDone == true ? 'Done' : 'Todo',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

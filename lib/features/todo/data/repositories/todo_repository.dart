@@ -43,6 +43,14 @@ class TodoRepository {
     }
   }
 
+  Future<void> updateTodo(String id, bool isDone) async {
+    try {
+      await remoteDataSource.updateTodo(id, isDone);
+    } catch (e) {
+      log('update todo [id:$id] [isDone:$isDone], : $e');
+    }
+  }
+
   // Helper method to map DTOs to domain models
   TodoModel _mapDtoToModel(TodoDTO dto) {
     try {
@@ -51,10 +59,10 @@ class TodoRepository {
         createdAt = DateTime.fromMillisecondsSinceEpoch(dto.createdAtSeconds! * 1000);
       }
 
-      return TodoModel(id: dto.id, title: dto.title, description: dto.description, imageUrl: dto.imageUrl, createdAt: createdAt);
+      return TodoModel(id: dto.id, title: dto.title, isDone: dto.isDone, description: dto.description, imageUrl: dto.imageUrl, createdAt: createdAt);
     } catch (e) {
       log('Error mapping DTO to model: $e');
-      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now());
+      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', isDone: false, createdAt: DateTime.now());
     }
   }
 }
