@@ -30,4 +30,24 @@ class TodoCubit extends Cubit<TodoState> {
       emit(TodosError(message: e.toString()));
     }
   }
+
+  Future<void> updateStatus(String id, bool isDone) async {
+    try {
+      await _repository.updateStatus(id, isDone);
+
+      // optimistic update to prevent reloading and rendering the entire list
+      if (state is TodosLoaded) {
+        final updatedItems =
+            (state as TodosLoaded).todos.map((item) {
+              return item.id == id ? item.copyWith(isDone: isDone) : item;
+            }).toList();
+
+        emit(TodosLoaded(todos: updatedItems));
+      } else {
+        loadTodos();
+      }
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
 }

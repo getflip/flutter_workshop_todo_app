@@ -45,6 +45,15 @@ class TodoRepository {
     }
   }
 
+  // Toggle a todo as done/to do
+  Future<void> updateStatus(String id, bool isDone) async {
+    try {
+      await remoteDataSource.updateStatus(id, isDone);
+    } catch (e) {
+      log('Error toggling remote todo: $e');
+    }
+  }
+
   // Helper method to map DTOs to domain models
   TodoModel _mapDtoToModel(TodoDTO dto) {
     try {
@@ -58,6 +67,7 @@ class TodoRepository {
       return TodoModel(
         id: dto.id,
         title: dto.title,
+        isDone: dto.isDone,
         description: dto.description,
         imageUrl: dto.imageUrl,
         createdAt: createdAt,
@@ -67,6 +77,7 @@ class TodoRepository {
       return TodoModel(
         id: const Uuid().v4(),
         title: 'Unknown title',
+        isDone: false,
         createdAt: DateTime.now(),
       );
     }

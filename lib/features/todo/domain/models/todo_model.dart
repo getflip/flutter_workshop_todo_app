@@ -11,6 +11,7 @@ class TodoModel with _$TodoModel {
   const factory TodoModel({
     required String id,
     required String title,
+    required bool isDone,
     String? description,
     String? imageUrl,
     DateTime? createdAt,
