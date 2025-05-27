@@ -35,8 +35,8 @@ class TodoListScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: todos.length,
               itemBuilder: (context, index) {
-                return TodoItem(todo: todos[index], onToggle: (isDone) {
-                  todoCubit.updateDone(todos[index].id, isDone);
+                return TodoItem(todo: todos[index], onToggled: (isDone) {
+                  todoCubit.updateDone(todos[index].id, isDone, todos);
                 });
               },
             );

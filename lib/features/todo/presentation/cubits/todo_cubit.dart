@@ -31,10 +31,16 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future<void> updateDone(String id, bool isDone) async {
+  Future<void> updateDone(String id, bool isDone, List<TodoModel> todos) async {
     try {
+      final updatedTodos =
+          todos
+              .map(
+                (todo) => todo.id == id ? todo.copyWith(isDone: isDone) : todo,
+              )
+              .toList();
+      emit(TodosLoaded(todos: updatedTodos));
       await _repository.updateTodo(id, isDone);
-      await loadTodos();
     } catch (e) {
       emit(TodosError(message: e.toString()));
     }

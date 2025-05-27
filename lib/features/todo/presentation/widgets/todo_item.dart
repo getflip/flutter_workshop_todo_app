@@ -4,9 +4,9 @@ import '../../domain/models/todo_model.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoModel todo;
-  final Function(bool) onToggle;
+  final Function(bool) onToggled;
 
-  const TodoItem({super.key, required this.todo, required this.onToggle});
+  const TodoItem({super.key, required this.todo, required this.onToggled});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class TodoItem extends StatelessWidget {
             Row(
               children: [
                 Checkbox(value: todo.isDone, onChanged: (value) {
-                  onToggle(value ?? false);
+                  onToggled(value ?? false);
                 }),
                 Text(
                   todo.title,

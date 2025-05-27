@@ -26,12 +26,3 @@ class TodosError extends TodoState {
   @override
   List<Object> get props => [message];
 }
-
-class TodoUpdated extends TodoState {
-  final TodoModel todo;
-
-  const TodoUpdated({required this.todo});
-
-  @override
-  List<Object> get props => [todo];
-}
