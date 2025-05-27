@@ -31,17 +31,21 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title) async {
+  Future<TodoDTO> addTodo(String title, String? description, String? imageUrl) async {
     try {
       final newTodo = {
+        'id': generateId(),
         'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
         'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        'isDone': false,
       };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
       final response = await _client.post(
-        Uri.parse('$baseUrl/todos'),
+        Uri.parse('$baseUrl/todo'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(newTodo),
       );
