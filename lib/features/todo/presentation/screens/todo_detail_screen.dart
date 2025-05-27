@@ -11,6 +11,8 @@ class TodoDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final todoCubit = context.read<TodoCubit>();
+
     return BlocBuilder<TodoCubit, TodoState>(
       builder: (context, state) {
         TodoModel? todo;
@@ -22,7 +24,19 @@ class TodoDetailScreen extends StatelessWidget {
 
         if (todo != null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Todo Detail')),
+            appBar: AppBar(
+              title: Text("Detail"),
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    todo.isFavourite ? Icons.star : Icons.star_border,
+                    color: todo.isFavourite ? Colors.amber : null,
+                  ),
+                  onPressed: () => todoCubit.toggleTodoFavourite(todo!.id),
+                  tooltip: 'Favorite',
+                ),
+              ],
+            ),
             body: SafeArea(
               child: Column(
                 children: [

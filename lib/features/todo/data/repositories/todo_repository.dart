@@ -58,6 +58,27 @@ class TodoRepository {
     }
   }
 
+  Future<bool?> toggleTodoFavourite(String id) async {
+    try {
+      final favouriteIds = await localDataSource.getFavouriteTodos();
+
+      final isFavourite = favouriteIds.contains(id);
+
+      if (isFavourite) {
+        favouriteIds.remove(id);
+      } else {
+        favouriteIds.add(id);
+      }
+
+      await localDataSource.setFavouriteTodos(favouriteIds);
+
+      return !isFavourite;
+    } catch (e) {
+      log('Error toggling todo favourite: $e');
+      return null;
+    }
+  }
+
   // Helper method to map DTOs to domain models
   TodoModel _mapDtoToModel(TodoDTO dto, List<String> favouriteIds) {
     try {

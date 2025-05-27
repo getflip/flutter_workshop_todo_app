@@ -44,4 +44,20 @@ class TodoCubit extends Cubit<TodoState> {
       emit(TodosError(message: e.toString()));
     }
   }
+
+  Future<void> toggleTodoFavourite(String id) async {
+    try {
+      TodoModel? currentTodo = loaded.todos.firstWhere((todo) => todo.id == id);
+
+      final updatedFavorite = await _repository.toggleTodoFavourite(id);
+
+      if (updatedFavorite == null) return;
+
+      TodoModel updatedTodo = currentTodo.copyWith(isFavourite: updatedFavorite);
+
+      emit(TodosLoaded(todos: loaded.todos.map((todo) => todo.id == id ? updatedTodo : todo).toList()));
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
 }
