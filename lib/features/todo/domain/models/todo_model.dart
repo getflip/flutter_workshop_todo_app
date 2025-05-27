@@ -2,14 +2,20 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
 part 'todo_model.freezed.dart';
+
 part 'todo_model.g.dart';
 
 @freezed
 class TodoModel with _$TodoModel {
   const TodoModel._();
 
-  const factory TodoModel({required String id, required String title, DateTime? createdAt}) =
-      _TodoModel;
+  const factory TodoModel({
+    required String id,
+    required String title,
+    String? description,
+    String? imageUrl,
+    DateTime? createdAt,
+  }) = _TodoModel;
 
   DateTime get effectiveCreatedAt => createdAt ?? DateTime.now();
 
