@@ -17,7 +17,7 @@ class TodoRemoteDataSource {
 
   Future<List<TodoDTO>> getTodos() async {
     try {
-      final response = await _client.get(Uri.parse('$baseUrl/todos'));
+      final response = await _client.get(Uri.parse('$baseUrl/todo'));
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
@@ -39,7 +39,7 @@ class TodoRemoteDataSource {
       log('Sending todo: ${json.encode(newTodo)}');
 
       final response = await _client.post(
-        Uri.parse('$baseUrl/todos'),
+        Uri.parse('$baseUrl/todo'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(newTodo),
       );
