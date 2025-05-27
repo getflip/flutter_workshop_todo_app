@@ -14,11 +14,13 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -27,6 +29,7 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
       context.read<TodoCubit>().addTodo(
         _titleController.text,
         _descriptionController.text,
+        _imageUrlController.text,
       );
       Navigator.pop(context);
     }
@@ -61,11 +64,19 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
               TextFormField(
                 controller: _descriptionController,
                 decoration: const InputDecoration(
-                  labelText: 'Description',
+                  labelText: 'Description (optional)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.multiline,
                 maxLength: 1000,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _imageUrlController,
+                decoration: const InputDecoration(
+                  labelText: 'Image URL (optional)',
+                  border: OutlineInputBorder(),
+                ),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

@@ -12,6 +12,8 @@ class TodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todoCubit = context.read<TodoCubit>();
+    final bool hasDescription =
+        todo.description != null && todo.description!.isNotEmpty;
     final bool hasImage = todo.imageUrl != null && todo.imageUrl!.isNotEmpty;
 
     return Card(
@@ -50,12 +52,14 @@ class TodoItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(
-                todo.description ?? '<no description>',
-                style: const TextStyle(fontSize: 14),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              hasDescription
+                  ? Text(
+                    todo.description ?? '<no description>',
+                    style: const TextStyle(fontSize: 14),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                  : const SizedBox.shrink(),
               const SizedBox(height: 4),
               hasImage
                   ? Image.network(

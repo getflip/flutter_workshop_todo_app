@@ -31,11 +31,16 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title, String description) async {
+  Future<TodoDTO> addTodo(
+    String title,
+    String? description,
+    String? imageUrl,
+  ) async {
     try {
       final newTodo = {
         'title': title,
         'description': description,
+        'imageUrl': imageUrl,
         'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
       };
 

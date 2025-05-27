@@ -21,10 +21,14 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future<void> addTodo(String title, String description) async {
+  Future<void> addTodo(
+    String title,
+    String? description,
+    String? imageUrl,
+  ) async {
     try {
       emit(TodosLoading());
-      await _repository.addTodo(title, description);
+      await _repository.addTodo(title, description, imageUrl);
       await loadTodos();
     } catch (e) {
       emit(TodosError(message: e.toString()));
