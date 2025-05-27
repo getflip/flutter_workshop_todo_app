@@ -60,6 +60,35 @@ class TodoRemoteDataSource {
     }
   }
 
+  Future<TodoDTO> updateTodoStatus(String id, bool isDone) async {
+    try {
+      final newTodo = {'isDone': isDone};
+
+      log('Updating todo status: ${json.encode(newTodo)}');
+
+      final response = await _client.patch(
+        Uri.parse('$baseUrl/todo/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(newTodo),
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        // If the API response is not in the expected format, transform it
+        return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to update todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error updating todo: $e');
+      throw Exception('Failed to update todo: $e');
+    }
+  }
+
   // For local client-side ID generation
   String generateId() {
     return const Uuid().v4();

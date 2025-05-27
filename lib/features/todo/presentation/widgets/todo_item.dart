@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/models/todo_model.dart';
+import '../cubits/todo_cubit.dart';
 
 class TodoItem extends StatelessWidget {
   final TodoModel todo;
@@ -9,6 +11,8 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final todoCubit = context.read<TodoCubit>();
+
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -50,6 +54,12 @@ class TodoItem extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            Checkbox(
+              value: todo.isDone,
+              onChanged: (value) {
+                todoCubit.updateTodoStatus(todo.id, value ?? false);
+              },
             ),
           ],
         ),

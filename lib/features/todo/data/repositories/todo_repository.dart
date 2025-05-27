@@ -43,6 +43,16 @@ class TodoRepository {
     }
   }
 
+  Future<TodoModel?> updateTodoStatus(String id, bool isDone) async {
+    try {
+      // Update todo status remotely
+      return _mapDtoToModel(await remoteDataSource.updateTodoStatus(id, isDone));
+    } catch (e) {
+      log('Error updating remote todo status: $e');
+      return null;
+    }
+  }
+
   // Helper method to map DTOs to domain models
   TodoModel _mapDtoToModel(TodoDTO dto) {
     try {

@@ -9,6 +9,8 @@ part 'todo_state.dart';
 class TodoCubit extends Cubit<TodoState> {
   final TodoRepository _repository;
 
+  TodosLoaded get loaded => state as TodosLoaded;
+
   TodoCubit(this._repository) : super(TodosLoading());
 
   Future<void> loadTodos() async {
@@ -26,6 +28,18 @@ class TodoCubit extends Cubit<TodoState> {
       emit(TodosLoading());
       await _repository.addTodo(title);
       await loadTodos();
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> updateTodoStatus(String id, bool isDone) async {
+    try {
+      final updatedTodo = await _repository.updateTodoStatus(id, isDone);
+
+      if (updatedTodo != null) {
+        emit(TodosLoaded(todos: loaded.todos.map((todo) => todo.id == id ? updatedTodo : todo).toList()));
+      }
     } catch (e) {
       emit(TodosError(message: e.toString()));
     }
