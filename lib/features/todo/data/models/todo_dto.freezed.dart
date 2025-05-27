@@ -24,6 +24,9 @@ mixin _$TodoDTO {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   int? get createdAtSeconds => throw _privateConstructorUsedError;
+  bool get isDone => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
 
   /// Serializes this TodoDTO to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +42,14 @@ abstract class $TodoDTOCopyWith<$Res> {
   factory $TodoDTOCopyWith(TodoDTO value, $Res Function(TodoDTO) then) =
       _$TodoDTOCopyWithImpl<$Res, TodoDTO>;
   @useResult
-  $Res call({String id, String title, int? createdAtSeconds});
+  $Res call({
+    String id,
+    String title,
+    int? createdAtSeconds,
+    bool isDone,
+    String? description,
+    String? imageUrl,
+  });
 }
 
 /// @nodoc
@@ -60,6 +70,9 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
     Object? id = null,
     Object? title = null,
     Object? createdAtSeconds = freezed,
+    Object? isDone = null,
+    Object? description = freezed,
+    Object? imageUrl = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -78,6 +91,21 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
                     ? _value.createdAtSeconds
                     : createdAtSeconds // ignore: cast_nullable_to_non_nullable
                         as int?,
+            isDone:
+                null == isDone
+                    ? _value.isDone
+                    : isDone // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            description:
+                freezed == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            imageUrl:
+                freezed == imageUrl
+                    ? _value.imageUrl
+                    : imageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -92,7 +120,14 @@ abstract class _$$TodoDTOImplCopyWith<$Res> implements $TodoDTOCopyWith<$Res> {
   ) = __$$TodoDTOImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, int? createdAtSeconds});
+  $Res call({
+    String id,
+    String title,
+    int? createdAtSeconds,
+    bool isDone,
+    String? description,
+    String? imageUrl,
+  });
 }
 
 /// @nodoc
@@ -112,6 +147,9 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? createdAtSeconds = freezed,
+    Object? isDone = null,
+    Object? description = freezed,
+    Object? imageUrl = freezed,
   }) {
     return _then(
       _$TodoDTOImpl(
@@ -130,6 +168,21 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
                 ? _value.createdAtSeconds
                 : createdAtSeconds // ignore: cast_nullable_to_non_nullable
                     as int?,
+        isDone:
+            null == isDone
+                ? _value.isDone
+                : isDone // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        description:
+            freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        imageUrl:
+            freezed == imageUrl
+                ? _value.imageUrl
+                : imageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -142,6 +195,9 @@ class _$TodoDTOImpl extends _TodoDTO {
     required this.id,
     required this.title,
     this.createdAtSeconds,
+    required this.isDone,
+    this.description,
+    this.imageUrl,
   }) : super._();
 
   factory _$TodoDTOImpl.fromJson(Map<String, dynamic> json) =>
@@ -153,10 +209,16 @@ class _$TodoDTOImpl extends _TodoDTO {
   final String title;
   @override
   final int? createdAtSeconds;
+  @override
+  final bool isDone;
+  @override
+  final String? description;
+  @override
+  final String? imageUrl;
 
   @override
   String toString() {
-    return 'TodoDTO(id: $id, title: $title, createdAtSeconds: $createdAtSeconds)';
+    return 'TodoDTO(id: $id, title: $title, createdAtSeconds: $createdAtSeconds, isDone: $isDone, description: $description, imageUrl: $imageUrl)';
   }
 
   @override
@@ -167,12 +229,25 @@ class _$TodoDTOImpl extends _TodoDTO {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.createdAtSeconds, createdAtSeconds) ||
-                other.createdAtSeconds == createdAtSeconds));
+                other.createdAtSeconds == createdAtSeconds) &&
+            (identical(other.isDone, isDone) || other.isDone == isDone) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, createdAtSeconds);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    createdAtSeconds,
+    isDone,
+    description,
+    imageUrl,
+  );
 
   /// Create a copy of TodoDTO
   /// with the given fields replaced by the non-null parameter values.
@@ -193,6 +268,9 @@ abstract class _TodoDTO extends TodoDTO {
     required final String id,
     required final String title,
     final int? createdAtSeconds,
+    required final bool isDone,
+    final String? description,
+    final String? imageUrl,
   }) = _$TodoDTOImpl;
   const _TodoDTO._() : super._();
 
@@ -204,6 +282,12 @@ abstract class _TodoDTO extends TodoDTO {
   String get title;
   @override
   int? get createdAtSeconds;
+  @override
+  bool get isDone;
+  @override
+  String? get description;
+  @override
+  String? get imageUrl;
 
   /// Create a copy of TodoDTO
   /// with the given fields replaced by the non-null parameter values.

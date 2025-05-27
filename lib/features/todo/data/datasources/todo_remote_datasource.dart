@@ -4,14 +4,14 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
+import 'package:uuid/v4.dart';
 
 import '../models/todo_dto.dart';
 
 @injectable
 class TodoRemoteDataSource {
   final http.Client _client;
-  // TODO: Replace this with the URL we provide you
-  final String baseUrl = 'https://6825aa0f0f0188d7e72ddd9a.mockapi.io/api/v1';
+  final String baseUrl = 'https://6835745dcd78db2058c1928b.mockapi.io';
 
   TodoRemoteDataSource(this._client);
 
@@ -24,7 +24,7 @@ class TodoRemoteDataSource {
         log('API Response: ${response.body}');
         return jsonList.map((json) => TodoDTO.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load todos: ${response.statusCode}');
+        throw Exception('Failed to load todos: ${response.statusCode} \n ${response.body}');
       }
     } catch (e) {
       log('Error fetching todos: $e');
@@ -32,9 +32,16 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title) async {
+  Future<TodoDTO> addTodo(String title, String description, String imageUrl) async {
     try {
-      final newTodo = {'title': title, 'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000};
+      final newTodo = {
+        'id': generateId(),
+        'title': title,
+        'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        'isDone': false,
+        'imageUrl': imageUrl,
+        'description': description,
+      };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
@@ -53,7 +60,7 @@ class TodoRemoteDataSource {
         // If the API response is not in the expected format, transform it
         return TodoDTO.fromJson(responseData);
       } else {
-        throw Exception('Failed to create todo: ${response.statusCode}');
+        throw Exception('Failed to create todo: ${response.statusCode} \n ${response.body}');
       }
     } catch (e) {
       log('Error adding todo: $e');

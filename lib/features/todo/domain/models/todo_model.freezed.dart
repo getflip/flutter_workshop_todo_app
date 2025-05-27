@@ -24,6 +24,9 @@ mixin _$TodoModel {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  bool get isDone => throw _privateConstructorUsedError;
 
   /// Serializes this TodoModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +43,14 @@ abstract class $TodoModelCopyWith<$Res> {
   factory $TodoModelCopyWith(TodoModel value, $Res Function(TodoModel) then) =
       _$TodoModelCopyWithImpl<$Res, TodoModel>;
   @useResult
-  $Res call({String id, String title, DateTime? createdAt});
+  $Res call({
+    String id,
+    String title,
+    DateTime? createdAt,
+    String? imageUrl,
+    String? description,
+    bool isDone,
+  });
 }
 
 /// @nodoc
@@ -61,6 +71,9 @@ class _$TodoModelCopyWithImpl<$Res, $Val extends TodoModel>
     Object? id = null,
     Object? title = null,
     Object? createdAt = freezed,
+    Object? imageUrl = freezed,
+    Object? description = freezed,
+    Object? isDone = null,
   }) {
     return _then(
       _value.copyWith(
@@ -79,6 +92,21 @@ class _$TodoModelCopyWithImpl<$Res, $Val extends TodoModel>
                     ? _value.createdAt
                     : createdAt // ignore: cast_nullable_to_non_nullable
                         as DateTime?,
+            imageUrl:
+                freezed == imageUrl
+                    ? _value.imageUrl
+                    : imageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            description:
+                freezed == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            isDone:
+                null == isDone
+                    ? _value.isDone
+                    : isDone // ignore: cast_nullable_to_non_nullable
+                        as bool,
           )
           as $Val,
     );
@@ -94,7 +122,14 @@ abstract class _$$TodoModelImplCopyWith<$Res>
   ) = __$$TodoModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, DateTime? createdAt});
+  $Res call({
+    String id,
+    String title,
+    DateTime? createdAt,
+    String? imageUrl,
+    String? description,
+    bool isDone,
+  });
 }
 
 /// @nodoc
@@ -114,6 +149,9 @@ class __$$TodoModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? createdAt = freezed,
+    Object? imageUrl = freezed,
+    Object? description = freezed,
+    Object? isDone = null,
   }) {
     return _then(
       _$TodoModelImpl(
@@ -132,6 +170,21 @@ class __$$TodoModelImplCopyWithImpl<$Res>
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
                     as DateTime?,
+        imageUrl:
+            freezed == imageUrl
+                ? _value.imageUrl
+                : imageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        description:
+            freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        isDone:
+            null == isDone
+                ? _value.isDone
+                : isDone // ignore: cast_nullable_to_non_nullable
+                    as bool,
       ),
     );
   }
@@ -140,8 +193,14 @@ class __$$TodoModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$TodoModelImpl extends _TodoModel {
-  const _$TodoModelImpl({required this.id, required this.title, this.createdAt})
-    : super._();
+  const _$TodoModelImpl({
+    required this.id,
+    required this.title,
+    this.createdAt,
+    this.imageUrl,
+    this.description,
+    required this.isDone,
+  }) : super._();
 
   factory _$TodoModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoModelImplFromJson(json);
@@ -152,10 +211,16 @@ class _$TodoModelImpl extends _TodoModel {
   final String title;
   @override
   final DateTime? createdAt;
+  @override
+  final String? imageUrl;
+  @override
+  final String? description;
+  @override
+  final bool isDone;
 
   @override
   String toString() {
-    return 'TodoModel(id: $id, title: $title, createdAt: $createdAt)';
+    return 'TodoModel(id: $id, title: $title, createdAt: $createdAt, imageUrl: $imageUrl, description: $description, isDone: $isDone)';
   }
 
   @override
@@ -166,12 +231,25 @@ class _$TodoModelImpl extends _TodoModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.isDone, isDone) || other.isDone == isDone));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, createdAt);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    createdAt,
+    imageUrl,
+    description,
+    isDone,
+  );
 
   /// Create a copy of TodoModel
   /// with the given fields replaced by the non-null parameter values.
@@ -192,6 +270,9 @@ abstract class _TodoModel extends TodoModel {
     required final String id,
     required final String title,
     final DateTime? createdAt,
+    final String? imageUrl,
+    final String? description,
+    required final bool isDone,
   }) = _$TodoModelImpl;
   const _TodoModel._() : super._();
 
@@ -204,6 +285,12 @@ abstract class _TodoModel extends TodoModel {
   String get title;
   @override
   DateTime? get createdAt;
+  @override
+  String? get imageUrl;
+  @override
+  String? get description;
+  @override
+  bool get isDone;
 
   /// Create a copy of TodoModel
   /// with the given fields replaced by the non-null parameter values.

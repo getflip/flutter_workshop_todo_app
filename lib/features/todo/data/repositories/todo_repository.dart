@@ -34,10 +34,10 @@ class TodoRepository {
   }
 
   // Add a new todo remotely
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(String title, String description, String imageUrl) async {
     try {
       // Add todo remotely
-      await remoteDataSource.addTodo(title);
+      await remoteDataSource.addTodo(title, description, imageUrl);
     } catch (e) {
       log('Error adding remote todo: $e');
     }
@@ -51,10 +51,10 @@ class TodoRepository {
         createdAt = DateTime.fromMillisecondsSinceEpoch(dto.createdAtSeconds! * 1000);
       }
 
-      return TodoModel(id: dto.id, title: dto.title, createdAt: createdAt);
+      return TodoModel(id: dto.id, title: dto.title, createdAt: createdAt, isDone: dto.isDone);
     } catch (e) {
       log('Error mapping DTO to model: $e');
-      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now());
+      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now(), isDone: false);
     }
   }
 }
