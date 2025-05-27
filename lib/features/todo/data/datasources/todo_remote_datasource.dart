@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
-import 'package:uuid/v4.dart';
 
 import '../models/todo_dto.dart';
 
@@ -86,6 +85,29 @@ class TodoRemoteDataSource {
 
         // If the API response is not in the expected format, transform it
         return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to create todo: ${response.statusCode} \n ${response.body}');
+      }
+    } catch (e) {
+      log('error while updating done state: $e');
+      throw Exception('Failed to update done state');
+    }
+  }
+
+  Future<void> deleteTodo(String id) async {
+    try {
+      log('Deleting a todo with id: $id');
+
+      final response = await _client.delete(
+        Uri.parse('$baseUrl/todo/$id'),
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        log('response: $responseData');
       } else {
         throw Exception('Failed to create todo: ${response.statusCode} \n ${response.body}');
       }

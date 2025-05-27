@@ -52,6 +52,14 @@ class TodoRepository {
     }
   }
 
+  Future<void> deleteTodo(String id) async {
+    try {
+      await remoteDataSource.deleteTodo(id);
+    } catch (e) {
+      log('Error while deleting the todo: $e');
+    }
+  }
+
   // Helper method to map DTOs to domain models
   TodoModel _mapDtoToModel(TodoDTO dto) {
     try {
