@@ -23,6 +23,7 @@ TodoModel _$TodoModelFromJson(Map<String, dynamic> json) {
 mixin _$TodoModel {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  bool get isFavourite => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   bool? get isDone => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $TodoModelCopyWith<$Res> {
   $Res call({
     String id,
     String title,
+    bool isFavourite,
     String? description,
     String? imageUrl,
     bool? isDone,
@@ -70,6 +72,7 @@ class _$TodoModelCopyWithImpl<$Res, $Val extends TodoModel>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? isFavourite = null,
     Object? description = freezed,
     Object? imageUrl = freezed,
     Object? isDone = freezed,
@@ -87,6 +90,11 @@ class _$TodoModelCopyWithImpl<$Res, $Val extends TodoModel>
                     ? _value.title
                     : title // ignore: cast_nullable_to_non_nullable
                         as String,
+            isFavourite:
+                null == isFavourite
+                    ? _value.isFavourite
+                    : isFavourite // ignore: cast_nullable_to_non_nullable
+                        as bool,
             description:
                 freezed == description
                     ? _value.description
@@ -125,6 +133,7 @@ abstract class _$$TodoModelImplCopyWith<$Res>
   $Res call({
     String id,
     String title,
+    bool isFavourite,
     String? description,
     String? imageUrl,
     bool? isDone,
@@ -148,6 +157,7 @@ class __$$TodoModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? isFavourite = null,
     Object? description = freezed,
     Object? imageUrl = freezed,
     Object? isDone = freezed,
@@ -165,6 +175,11 @@ class __$$TodoModelImplCopyWithImpl<$Res>
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
                     as String,
+        isFavourite:
+            null == isFavourite
+                ? _value.isFavourite
+                : isFavourite // ignore: cast_nullable_to_non_nullable
+                    as bool,
         description:
             freezed == description
                 ? _value.description
@@ -196,6 +211,7 @@ class _$TodoModelImpl extends _TodoModel {
   const _$TodoModelImpl({
     required this.id,
     required this.title,
+    required this.isFavourite,
     this.description,
     this.imageUrl,
     this.isDone,
@@ -210,6 +226,8 @@ class _$TodoModelImpl extends _TodoModel {
   @override
   final String title;
   @override
+  final bool isFavourite;
+  @override
   final String? description;
   @override
   final String? imageUrl;
@@ -220,7 +238,7 @@ class _$TodoModelImpl extends _TodoModel {
 
   @override
   String toString() {
-    return 'TodoModel(id: $id, title: $title, description: $description, imageUrl: $imageUrl, isDone: $isDone, createdAt: $createdAt)';
+    return 'TodoModel(id: $id, title: $title, isFavourite: $isFavourite, description: $description, imageUrl: $imageUrl, isDone: $isDone, createdAt: $createdAt)';
   }
 
   @override
@@ -230,6 +248,8 @@ class _$TodoModelImpl extends _TodoModel {
             other is _$TodoModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.isFavourite, isFavourite) ||
+                other.isFavourite == isFavourite) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.imageUrl, imageUrl) ||
@@ -245,6 +265,7 @@ class _$TodoModelImpl extends _TodoModel {
     runtimeType,
     id,
     title,
+    isFavourite,
     description,
     imageUrl,
     isDone,
@@ -269,6 +290,7 @@ abstract class _TodoModel extends TodoModel {
   const factory _TodoModel({
     required final String id,
     required final String title,
+    required final bool isFavourite,
     final String? description,
     final String? imageUrl,
     final bool? isDone,
@@ -283,6 +305,8 @@ abstract class _TodoModel extends TodoModel {
   String get id;
   @override
   String get title;
+  @override
+  bool get isFavourite;
   @override
   String? get description;
   @override

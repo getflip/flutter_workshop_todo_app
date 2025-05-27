@@ -12,6 +12,7 @@ class TodoModel with _$TodoModel {
   const factory TodoModel({
     required String id,
     required String title,
+    required bool isFavourite,
     String? description,
     String? imageUrl,
     bool? isDone,

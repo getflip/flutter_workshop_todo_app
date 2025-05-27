@@ -37,11 +37,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i484.TodoRemoteDataSource>(
       () => _i484.TodoRemoteDataSource(gh<_i519.Client>()),
     );
-    gh.factory<_i131.TodoRepository>(
-      () => _i131.TodoRepository(gh<_i484.TodoRemoteDataSource>()),
-    );
     gh.factory<_i137.TodoLocalDataSource>(
       () => _i137.TodoLocalDataSource(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i131.TodoRepository>(
+      () => _i131.TodoRepository(
+        gh<_i484.TodoRemoteDataSource>(),
+        gh<_i137.TodoLocalDataSource>(),
+      ),
     );
     return this;
   }
