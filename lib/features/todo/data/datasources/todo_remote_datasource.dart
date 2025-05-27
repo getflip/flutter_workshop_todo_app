@@ -65,6 +65,22 @@ class TodoRemoteDataSource {
     }
   }
 
+  Future<void> deleteTodo(String id) async {
+    try {
+      final response = await _client.delete(Uri.parse('$baseUrl/todo/$id'));
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error deleting todo: $e');
+      throw Exception('Failed to delete todo: $e');
+    }
+  }
+
   Future<TodoDTO> updateTodoStatus(String id, bool isDone) async {
     try {
       final newTodo = {'isDone': isDone};

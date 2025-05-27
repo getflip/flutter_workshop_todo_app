@@ -64,6 +64,14 @@ class TodoDetailScreen extends StatelessWidget {
                             todo.formattedDate,
                             style: TextStyle(fontSize: 12, color: Colors.grey[600], fontStyle: FontStyle.italic),
                           ),
+                          ElevatedButton(
+                            onPressed: () {
+                              todoCubit.deleteTodo(todo!.id);
+                              Navigator.pop(context);
+                            },
+                            style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 16)),
+                            child: const Text('Delete', style: TextStyle(color: Colors.redAccent)),
+                          ),
                         ],
                       ),
                     ),

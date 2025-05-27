@@ -60,4 +60,14 @@ class TodoCubit extends Cubit<TodoState> {
       emit(TodosError(message: e.toString()));
     }
   }
+
+  Future<void> deleteTodo(String id) async {
+    try {
+      emit(TodosLoading());
+      await _repository.deleteTodo(id);
+      await loadTodos();
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
 }

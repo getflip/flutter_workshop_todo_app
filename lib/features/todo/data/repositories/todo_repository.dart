@@ -46,6 +46,15 @@ class TodoRepository {
     }
   }
 
+  Future<void> deleteTodo(String id) async {
+    try {
+      // Delete todo remotely
+      await remoteDataSource.deleteTodo(id);
+    } catch (e) {
+      log('Error deleting remote todo: $e');
+    }
+  }
+
   Future<TodoModel?> updateTodoStatus(String id, bool isDone) async {
     try {
       // Update todo status remotely
