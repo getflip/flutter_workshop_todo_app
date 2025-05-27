@@ -36,10 +36,10 @@ class TodoRepository {
   }
 
   // Add a new todo remotely
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(String title, String description) async {
     try {
       // Add todo remotely
-      await remoteDataSource.addTodo(title);
+      await remoteDataSource.addTodo(title, description);
     } catch (e) {
       log('Error adding remote todo: $e');
     }
