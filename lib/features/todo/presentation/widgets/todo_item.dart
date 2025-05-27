@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_todo_workshop/features/todo/presentation/cubits/todo_cubit.dart';
 
 import '../../domain/models/todo_model.dart';
 
@@ -6,10 +8,6 @@ class TodoItem extends StatelessWidget {
   final TodoModel todo;
 
   const TodoItem({super.key, required this.todo});
-
-  void setDone(bool value) {
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +58,9 @@ class TodoItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Checkbox(value: todo.isDone, onChanged: null)
+                Checkbox(value: todo.isDone, onChanged: (bool? value) {
+                  context.read<TodoCubit>().updateTodo(!todo.isDone, todo.id);
+                })
               ],
             ),
           ],
