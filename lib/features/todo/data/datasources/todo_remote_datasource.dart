@@ -31,9 +31,14 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title) async {
+  Future<TodoDTO> addTodo(String title, String? description, String? imageUrl) async {
     try {
-      final newTodo = {'title': title, 'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000};
+      final newTodo = {
+        'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
+        'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
