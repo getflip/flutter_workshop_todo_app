@@ -10,6 +10,8 @@ class TodoDTO with _$TodoDTO {
   const factory TodoDTO({
     required String id,
     required String title,
+    required String description,
+    required String imageUrl,
     int? createdAtSeconds,
   }) = _TodoDTO;
 

@@ -17,12 +17,41 @@ class TodoItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(todo.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            todo.imageUrl.isNotEmpty
+                ? Center(
+                  child: AspectRatio(
+                    aspectRatio: 1 / 1, // A square (1:1 ratio)
+                    child: Image.network(
+                      todo.imageUrl,
+                      fit: BoxFit.cover, // Cover the entire area
+                    ),
+                  ),
+                )
+                : const SizedBox.shrink(),
+            const SizedBox(height: 10),
+            Text(
+              todo.title,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 4),
             Text(
               todo.formattedDate,
-              style: TextStyle(fontSize: 12, color: Colors.grey[600], fontStyle: FontStyle.italic),
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+                fontStyle: FontStyle.italic,
+              ),
             ),
+            todo.description.isNotEmpty
+                ? const SizedBox(height: 10)
+                : const SizedBox.shrink(),
+            todo.description.isNotEmpty
+                ? Text(
+                  todo.description,
+                  maxLines: 2,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
