@@ -25,8 +25,8 @@ mixin _$TodoDTO {
   String get title => throw _privateConstructorUsedError;
   int? get createdAtSeconds => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
 
   /// Serializes this TodoDTO to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,8 +47,8 @@ abstract class $TodoDTOCopyWith<$Res> {
     String title,
     int? createdAtSeconds,
     bool isDone,
-    String? description,
-    String? imageUrl,
+    String description,
+    String imageUrl,
   });
 }
 
@@ -71,8 +71,8 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
     Object? title = null,
     Object? createdAtSeconds = freezed,
     Object? isDone = null,
-    Object? description = freezed,
-    Object? imageUrl = freezed,
+    Object? description = null,
+    Object? imageUrl = null,
   }) {
     return _then(
       _value.copyWith(
@@ -97,15 +97,15 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
                     : isDone // ignore: cast_nullable_to_non_nullable
                         as bool,
             description:
-                freezed == description
+                null == description
                     ? _value.description
                     : description // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
             imageUrl:
-                freezed == imageUrl
+                null == imageUrl
                     ? _value.imageUrl
                     : imageUrl // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
           )
           as $Val,
     );
@@ -125,8 +125,8 @@ abstract class _$$TodoDTOImplCopyWith<$Res> implements $TodoDTOCopyWith<$Res> {
     String title,
     int? createdAtSeconds,
     bool isDone,
-    String? description,
-    String? imageUrl,
+    String description,
+    String imageUrl,
   });
 }
 
@@ -148,8 +148,8 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
     Object? title = null,
     Object? createdAtSeconds = freezed,
     Object? isDone = null,
-    Object? description = freezed,
-    Object? imageUrl = freezed,
+    Object? description = null,
+    Object? imageUrl = null,
   }) {
     return _then(
       _$TodoDTOImpl(
@@ -174,15 +174,15 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
                 : isDone // ignore: cast_nullable_to_non_nullable
                     as bool,
         description:
-            freezed == description
+            null == description
                 ? _value.description
                 : description // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
         imageUrl:
-            freezed == imageUrl
+            null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
       ),
     );
   }
@@ -196,8 +196,8 @@ class _$TodoDTOImpl extends _TodoDTO {
     required this.title,
     this.createdAtSeconds,
     required this.isDone,
-    this.description,
-    this.imageUrl,
+    required this.description,
+    required this.imageUrl,
   }) : super._();
 
   factory _$TodoDTOImpl.fromJson(Map<String, dynamic> json) =>
@@ -212,9 +212,9 @@ class _$TodoDTOImpl extends _TodoDTO {
   @override
   final bool isDone;
   @override
-  final String? description;
+  final String description;
   @override
-  final String? imageUrl;
+  final String imageUrl;
 
   @override
   String toString() {
@@ -269,8 +269,8 @@ abstract class _TodoDTO extends TodoDTO {
     required final String title,
     final int? createdAtSeconds,
     required final bool isDone,
-    final String? description,
-    final String? imageUrl,
+    required final String description,
+    required final String imageUrl,
   }) = _$TodoDTOImpl;
   const _TodoDTO._() : super._();
 
@@ -285,9 +285,9 @@ abstract class _TodoDTO extends TodoDTO {
   @override
   bool get isDone;
   @override
-  String? get description;
+  String get description;
   @override
-  String? get imageUrl;
+  String get imageUrl;
 
   /// Create a copy of TodoDTO
   /// with the given fields replaced by the non-null parameter values.

@@ -24,8 +24,8 @@ mixin _$TodoModel {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
 
   /// Serializes this TodoModel to a JSON map.
@@ -47,8 +47,8 @@ abstract class $TodoModelCopyWith<$Res> {
     String id,
     String title,
     DateTime? createdAt,
-    String? imageUrl,
-    String? description,
+    String imageUrl,
+    String description,
     bool isDone,
   });
 }
@@ -71,8 +71,8 @@ class _$TodoModelCopyWithImpl<$Res, $Val extends TodoModel>
     Object? id = null,
     Object? title = null,
     Object? createdAt = freezed,
-    Object? imageUrl = freezed,
-    Object? description = freezed,
+    Object? imageUrl = null,
+    Object? description = null,
     Object? isDone = null,
   }) {
     return _then(
@@ -93,15 +93,15 @@ class _$TodoModelCopyWithImpl<$Res, $Val extends TodoModel>
                     : createdAt // ignore: cast_nullable_to_non_nullable
                         as DateTime?,
             imageUrl:
-                freezed == imageUrl
+                null == imageUrl
                     ? _value.imageUrl
                     : imageUrl // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
             description:
-                freezed == description
+                null == description
                     ? _value.description
                     : description // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
             isDone:
                 null == isDone
                     ? _value.isDone
@@ -126,8 +126,8 @@ abstract class _$$TodoModelImplCopyWith<$Res>
     String id,
     String title,
     DateTime? createdAt,
-    String? imageUrl,
-    String? description,
+    String imageUrl,
+    String description,
     bool isDone,
   });
 }
@@ -149,8 +149,8 @@ class __$$TodoModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? createdAt = freezed,
-    Object? imageUrl = freezed,
-    Object? description = freezed,
+    Object? imageUrl = null,
+    Object? description = null,
     Object? isDone = null,
   }) {
     return _then(
@@ -171,15 +171,15 @@ class __$$TodoModelImplCopyWithImpl<$Res>
                 : createdAt // ignore: cast_nullable_to_non_nullable
                     as DateTime?,
         imageUrl:
-            freezed == imageUrl
+            null == imageUrl
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
         description:
-            freezed == description
+            null == description
                 ? _value.description
                 : description // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
         isDone:
             null == isDone
                 ? _value.isDone
@@ -197,8 +197,8 @@ class _$TodoModelImpl extends _TodoModel {
     required this.id,
     required this.title,
     this.createdAt,
-    this.imageUrl,
-    this.description,
+    required this.imageUrl,
+    required this.description,
     required this.isDone,
   }) : super._();
 
@@ -212,9 +212,9 @@ class _$TodoModelImpl extends _TodoModel {
   @override
   final DateTime? createdAt;
   @override
-  final String? imageUrl;
+  final String imageUrl;
   @override
-  final String? description;
+  final String description;
   @override
   final bool isDone;
 
@@ -270,8 +270,8 @@ abstract class _TodoModel extends TodoModel {
     required final String id,
     required final String title,
     final DateTime? createdAt,
-    final String? imageUrl,
-    final String? description,
+    required final String imageUrl,
+    required final String description,
     required final bool isDone,
   }) = _$TodoModelImpl;
   const _TodoModel._() : super._();
@@ -286,9 +286,9 @@ abstract class _TodoModel extends TodoModel {
   @override
   DateTime? get createdAt;
   @override
-  String? get imageUrl;
+  String get imageUrl;
   @override
-  String? get description;
+  String get description;
   @override
   bool get isDone;
 

@@ -14,8 +14,8 @@ _$TodoModelImpl _$$TodoModelImplFromJson(Map<String, dynamic> json) =>
           json['createdAt'] == null
               ? null
               : DateTime.parse(json['createdAt'] as String),
-      imageUrl: json['imageUrl'] as String?,
-      description: json['description'] as String?,
+      imageUrl: json['imageUrl'] as String,
+      description: json['description'] as String,
       isDone: json['isDone'] as bool,
     );
 

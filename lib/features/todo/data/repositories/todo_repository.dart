@@ -51,10 +51,10 @@ class TodoRepository {
         createdAt = DateTime.fromMillisecondsSinceEpoch(dto.createdAtSeconds! * 1000);
       }
 
-      return TodoModel(id: dto.id, title: dto.title, createdAt: createdAt, isDone: dto.isDone);
+      return TodoModel(id: dto.id, title: dto.title, createdAt: createdAt, isDone: dto.isDone, imageUrl: dto.imageUrl, description: dto.description);
     } catch (e) {
       log('Error mapping DTO to model: $e');
-      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now(), isDone: false);
+      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now(), isDone: false, imageUrl: '', description: '');
     }
   }
 }
