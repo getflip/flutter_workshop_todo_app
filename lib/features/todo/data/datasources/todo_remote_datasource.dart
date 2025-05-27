@@ -16,7 +16,7 @@ class TodoRemoteDataSource {
 
   Future<List<TodoDTO>> getTodos() async {
     try {
-      final response = await _client.get(Uri.parse('$baseUrl/todos'));
+      final response = await _client.get(Uri.parse('$baseUrl/todo'));
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
