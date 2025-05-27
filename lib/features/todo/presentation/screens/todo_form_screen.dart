@@ -13,6 +13,8 @@ class TodoFormScreen extends StatefulWidget {
 class _TodoFormScreenState extends State<TodoFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
@@ -22,7 +24,7 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
 
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
-      context.read<TodoCubit>().addTodo(_titleController.text);
+      context.read<TodoCubit>().addTodo(_titleController.text, _descriptionController.text, _imageUrlController.text);
       Navigator.pop(context);
     }
   }
@@ -48,6 +50,16 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 24),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 24),
+              TextFormField(
+                controller: _imageUrlController,
+                decoration: const InputDecoration(labelText: 'Image URL', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 24),
               ElevatedButton(

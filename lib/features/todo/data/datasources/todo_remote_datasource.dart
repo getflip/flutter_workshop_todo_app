@@ -10,8 +10,7 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRemoteDataSource {
   final http.Client _client;
-  // TODO: Replace this with the URL we provide you
-  final String baseUrl = 'https://6825aa0f0f0188d7e72ddd9a.mockapi.io/api/v1';
+  final String baseUrl = 'https://6835753ccd78db2058c196b3.mockapi.io/';
 
   TodoRemoteDataSource(this._client);
 
@@ -32,9 +31,16 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title) async {
+  Future<TodoDTO> addTodo(String title, String? description, String? imageUrl) async {
     try {
-      final newTodo = {'title': title, 'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000};
+      final newTodo = {
+        'id': generateId(),
+        'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
+        'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        'isDone': false,
+      };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
@@ -58,6 +64,31 @@ class TodoRemoteDataSource {
     } catch (e) {
       log('Error adding todo: $e');
       throw Exception('Failed to create todo: $e');
+    }
+  }
+
+  Future<TodoDTO> updateDone(String id, bool isDone) async {
+    try {
+      log('Updating todo: $id, $isDone');
+
+      final response = await _client.put(
+        Uri.parse('$baseUrl/todo/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'isDone': isDone}),
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to update todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error updating todo: $e');
+      throw Exception('Failed to update todo: $e');
     }
   }
 

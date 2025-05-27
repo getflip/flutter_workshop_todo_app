@@ -8,8 +8,14 @@ part 'todo_model.g.dart';
 class TodoModel with _$TodoModel {
   const TodoModel._();
 
-  const factory TodoModel({required String id, required String title, DateTime? createdAt}) =
-      _TodoModel;
+  const factory TodoModel({
+    required String id,
+    required String title,
+    required String description,
+    required String imageUrl,
+    required bool isDone,
+    DateTime? createdAt,
+  }) = _TodoModel;
 
   DateTime get effectiveCreatedAt => createdAt ?? DateTime.now();
 

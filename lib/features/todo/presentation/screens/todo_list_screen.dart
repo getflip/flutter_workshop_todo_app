@@ -34,12 +34,21 @@ class TodoListScreen extends StatelessWidget {
 
             return ListView.builder(
               itemCount: todos.length,
-              itemBuilder: (context, index) {
-                return TodoItem(todo: todos[index]);
-              },
+              itemBuilder:
+                  (context, index) => TodoItem(
+                    todo: todos[index],
+                    onToggled: (isDone) {
+                      todoCubit.updateDone(todos[index].id, isDone, todos);
+                    },
+                  ),
             );
           } else if (state is TodosError) {
-            return Center(child: Text('Error: ${state.message}', style: const TextStyle(color: Colors.red)));
+            return Center(
+              child: Text(
+                'Error: ${state.message}',
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
           }
 
           return const Center(child: Text('Unknown state'));
@@ -50,7 +59,11 @@ class TodoListScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlocProvider.value(value: todoCubit, child: const TodoFormScreen()),
+              builder:
+                  (context) => BlocProvider.value(
+                    value: todoCubit,
+                    child: const TodoFormScreen(),
+                  ),
             ),
           );
         },
