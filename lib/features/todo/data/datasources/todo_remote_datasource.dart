@@ -10,8 +10,7 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRemoteDataSource {
   final http.Client _client;
-  // TODO: Replace this with the URL we provide you
-  final String baseUrl = 'https://6825aa0f0f0188d7e72ddd9a.mockapi.io/api/v1';
+  final String baseUrl = 'https://68346e5b464b49963602ccb5.mockapi.io';
 
   TodoRemoteDataSource(this._client);
 
