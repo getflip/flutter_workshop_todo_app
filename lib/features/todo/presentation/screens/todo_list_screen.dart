@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/todo_cubit.dart';
 import '../widgets/todo_item.dart';
+import 'todo_detail_screen.dart';
 import 'todo_form_screen.dart';
 
 class TodoListScreen extends StatelessWidget {
@@ -35,7 +36,19 @@ class TodoListScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: todos.length,
               itemBuilder: (context, index) {
-                return TodoItem(todo: todos[index]);
+                return GestureDetector(
+                  child: TodoItem(todo: todos[index]),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                BlocProvider.value(value: todoCubit, child: TodoDetailScreen(todoId: todos[index].id)),
+                      ),
+                    );
+                  },
+                );
               },
             );
           } else if (state is TodosError) {
