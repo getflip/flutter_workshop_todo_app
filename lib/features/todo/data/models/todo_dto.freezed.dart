@@ -23,6 +23,9 @@ TodoDTO _$TodoDTOFromJson(Map<String, dynamic> json) {
 mixin _$TodoDTO {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
+  bool get isDone => throw _privateConstructorUsedError;
   int? get createdAtSeconds => throw _privateConstructorUsedError;
 
   /// Serializes this TodoDTO to a JSON map.
@@ -39,7 +42,14 @@ abstract class $TodoDTOCopyWith<$Res> {
   factory $TodoDTOCopyWith(TodoDTO value, $Res Function(TodoDTO) then) =
       _$TodoDTOCopyWithImpl<$Res, TodoDTO>;
   @useResult
-  $Res call({String id, String title, int? createdAtSeconds});
+  $Res call({
+    String id,
+    String title,
+    String description,
+    String imageUrl,
+    bool isDone,
+    int? createdAtSeconds,
+  });
 }
 
 /// @nodoc
@@ -59,6 +69,9 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? description = null,
+    Object? imageUrl = null,
+    Object? isDone = null,
     Object? createdAtSeconds = freezed,
   }) {
     return _then(
@@ -73,6 +86,21 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
                     ? _value.title
                     : title // ignore: cast_nullable_to_non_nullable
                         as String,
+            description:
+                null == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String,
+            imageUrl:
+                null == imageUrl
+                    ? _value.imageUrl
+                    : imageUrl // ignore: cast_nullable_to_non_nullable
+                        as String,
+            isDone:
+                null == isDone
+                    ? _value.isDone
+                    : isDone // ignore: cast_nullable_to_non_nullable
+                        as bool,
             createdAtSeconds:
                 freezed == createdAtSeconds
                     ? _value.createdAtSeconds
@@ -92,7 +120,14 @@ abstract class _$$TodoDTOImplCopyWith<$Res> implements $TodoDTOCopyWith<$Res> {
   ) = __$$TodoDTOImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title, int? createdAtSeconds});
+  $Res call({
+    String id,
+    String title,
+    String description,
+    String imageUrl,
+    bool isDone,
+    int? createdAtSeconds,
+  });
 }
 
 /// @nodoc
@@ -111,6 +146,9 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? description = null,
+    Object? imageUrl = null,
+    Object? isDone = null,
     Object? createdAtSeconds = freezed,
   }) {
     return _then(
@@ -125,6 +163,21 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
                     as String,
+        description:
+            null == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String,
+        imageUrl:
+            null == imageUrl
+                ? _value.imageUrl
+                : imageUrl // ignore: cast_nullable_to_non_nullable
+                    as String,
+        isDone:
+            null == isDone
+                ? _value.isDone
+                : isDone // ignore: cast_nullable_to_non_nullable
+                    as bool,
         createdAtSeconds:
             freezed == createdAtSeconds
                 ? _value.createdAtSeconds
@@ -141,6 +194,9 @@ class _$TodoDTOImpl extends _TodoDTO {
   const _$TodoDTOImpl({
     required this.id,
     required this.title,
+    required this.description,
+    required this.imageUrl,
+    required this.isDone,
     this.createdAtSeconds,
   }) : super._();
 
@@ -152,11 +208,17 @@ class _$TodoDTOImpl extends _TodoDTO {
   @override
   final String title;
   @override
+  final String description;
+  @override
+  final String imageUrl;
+  @override
+  final bool isDone;
+  @override
   final int? createdAtSeconds;
 
   @override
   String toString() {
-    return 'TodoDTO(id: $id, title: $title, createdAtSeconds: $createdAtSeconds)';
+    return 'TodoDTO(id: $id, title: $title, description: $description, imageUrl: $imageUrl, isDone: $isDone, createdAtSeconds: $createdAtSeconds)';
   }
 
   @override
@@ -166,13 +228,26 @@ class _$TodoDTOImpl extends _TodoDTO {
             other is _$TodoDTOImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
+            (identical(other.isDone, isDone) || other.isDone == isDone) &&
             (identical(other.createdAtSeconds, createdAtSeconds) ||
                 other.createdAtSeconds == createdAtSeconds));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, createdAtSeconds);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    description,
+    imageUrl,
+    isDone,
+    createdAtSeconds,
+  );
 
   /// Create a copy of TodoDTO
   /// with the given fields replaced by the non-null parameter values.
@@ -192,6 +267,9 @@ abstract class _TodoDTO extends TodoDTO {
   const factory _TodoDTO({
     required final String id,
     required final String title,
+    required final String description,
+    required final String imageUrl,
+    required final bool isDone,
     final int? createdAtSeconds,
   }) = _$TodoDTOImpl;
   const _TodoDTO._() : super._();
@@ -202,6 +280,12 @@ abstract class _TodoDTO extends TodoDTO {
   String get id;
   @override
   String get title;
+  @override
+  String get description;
+  @override
+  String get imageUrl;
+  @override
+  bool get isDone;
   @override
   int? get createdAtSeconds;
 
