@@ -13,16 +13,24 @@ class TodoFormScreen extends StatefulWidget {
 class _TodoFormScreenState extends State<TodoFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _imageUrlController = TextEditingController();
 
   @override
   void dispose() {
     _titleController.dispose();
+    _descriptionController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
   }
 
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
-      context.read<TodoCubit>().addTodo(_titleController.text);
+      context.read<TodoCubit>().addTodo(
+          _titleController.text,
+          _descriptionController.text,
+          _imageUrlController.text,
+      );
       Navigator.pop(context);
     }
   }
@@ -36,18 +44,29 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 16),
               TextFormField(
                 controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title', border: OutlineInputBorder()),
+                decoration: _buildInputDecoration('Title', true),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a title';
                   }
                   return null;
                 },
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: _buildInputDecoration('Description', false),
+                minLines: 4,
+                maxLines: 8,
+              ),
+              TextFormField(
+                controller: _imageUrlController,
+                decoration: _buildInputDecoration('Image URL', false),
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -61,4 +80,11 @@ class _TodoFormScreenState extends State<TodoFormScreen> {
       ),
     );
   }
+
+  InputDecoration _buildInputDecoration(String labelText, bool? required) => InputDecoration(
+    suffixText: required! ? '*' : null,
+    labelStyle: required ? TextStyle(color: Colors.red) : null,
+    labelText: labelText,
+    border: OutlineInputBorder()
+  );
 }
