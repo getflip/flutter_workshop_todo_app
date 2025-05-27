@@ -25,6 +25,7 @@ mixin _$TodoDTO {
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  bool get isDone => throw _privateConstructorUsedError;
   int? get createdAtSeconds => throw _privateConstructorUsedError;
 
   /// Serializes this TodoDTO to a JSON map.
@@ -46,6 +47,7 @@ abstract class $TodoDTOCopyWith<$Res> {
     String title,
     String description,
     String imageUrl,
+    bool isDone,
     int? createdAtSeconds,
   });
 }
@@ -69,6 +71,7 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
     Object? title = null,
     Object? description = null,
     Object? imageUrl = null,
+    Object? isDone = null,
     Object? createdAtSeconds = freezed,
   }) {
     return _then(
@@ -93,6 +96,11 @@ class _$TodoDTOCopyWithImpl<$Res, $Val extends TodoDTO>
                     ? _value.imageUrl
                     : imageUrl // ignore: cast_nullable_to_non_nullable
                         as String,
+            isDone:
+                null == isDone
+                    ? _value.isDone
+                    : isDone // ignore: cast_nullable_to_non_nullable
+                        as bool,
             createdAtSeconds:
                 freezed == createdAtSeconds
                     ? _value.createdAtSeconds
@@ -117,6 +125,7 @@ abstract class _$$TodoDTOImplCopyWith<$Res> implements $TodoDTOCopyWith<$Res> {
     String title,
     String description,
     String imageUrl,
+    bool isDone,
     int? createdAtSeconds,
   });
 }
@@ -139,6 +148,7 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = null,
     Object? imageUrl = null,
+    Object? isDone = null,
     Object? createdAtSeconds = freezed,
   }) {
     return _then(
@@ -163,6 +173,11 @@ class __$$TodoDTOImplCopyWithImpl<$Res>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                     as String,
+        isDone:
+            null == isDone
+                ? _value.isDone
+                : isDone // ignore: cast_nullable_to_non_nullable
+                    as bool,
         createdAtSeconds:
             freezed == createdAtSeconds
                 ? _value.createdAtSeconds
@@ -181,6 +196,7 @@ class _$TodoDTOImpl extends _TodoDTO {
     required this.title,
     required this.description,
     required this.imageUrl,
+    required this.isDone,
     this.createdAtSeconds,
   }) : super._();
 
@@ -196,11 +212,13 @@ class _$TodoDTOImpl extends _TodoDTO {
   @override
   final String imageUrl;
   @override
+  final bool isDone;
+  @override
   final int? createdAtSeconds;
 
   @override
   String toString() {
-    return 'TodoDTO(id: $id, title: $title, description: $description, imageUrl: $imageUrl, createdAtSeconds: $createdAtSeconds)';
+    return 'TodoDTO(id: $id, title: $title, description: $description, imageUrl: $imageUrl, isDone: $isDone, createdAtSeconds: $createdAtSeconds)';
   }
 
   @override
@@ -214,6 +232,7 @@ class _$TodoDTOImpl extends _TodoDTO {
                 other.description == description) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.isDone, isDone) || other.isDone == isDone) &&
             (identical(other.createdAtSeconds, createdAtSeconds) ||
                 other.createdAtSeconds == createdAtSeconds));
   }
@@ -226,6 +245,7 @@ class _$TodoDTOImpl extends _TodoDTO {
     title,
     description,
     imageUrl,
+    isDone,
     createdAtSeconds,
   );
 
@@ -249,6 +269,7 @@ abstract class _TodoDTO extends TodoDTO {
     required final String title,
     required final String description,
     required final String imageUrl,
+    required final bool isDone,
     final int? createdAtSeconds,
   }) = _$TodoDTOImpl;
   const _TodoDTO._() : super._();
@@ -263,6 +284,8 @@ abstract class _TodoDTO extends TodoDTO {
   String get description;
   @override
   String get imageUrl;
+  @override
+  bool get isDone;
   @override
   int? get createdAtSeconds;
 

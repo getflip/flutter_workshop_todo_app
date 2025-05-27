@@ -33,7 +33,10 @@ class TodoRemoteDataSource {
 
   Future<TodoDTO> addTodo(String title) async {
     try {
-      final newTodo = {'title': title, 'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000};
+      final newTodo = {
+        'title': title,
+        'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
@@ -57,6 +60,31 @@ class TodoRemoteDataSource {
     } catch (e) {
       log('Error adding todo: $e');
       throw Exception('Failed to create todo: $e');
+    }
+  }
+
+  Future<TodoDTO> updateDone(String id, bool isDone) async {
+    try {
+      log('Updating todo: $id, $isDone');
+
+      final response = await _client.put(
+        Uri.parse('$baseUrl/todo/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'isDone': isDone}),
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to update todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error updating todo: $e');
+      throw Exception('Failed to update todo: $e');
     }
   }
 

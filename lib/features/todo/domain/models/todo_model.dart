@@ -13,6 +13,7 @@ class TodoModel with _$TodoModel {
     required String title,
     required String description,
     required String imageUrl,
+    required bool isDone,
     DateTime? createdAt,
   }) = _TodoModel;
 
