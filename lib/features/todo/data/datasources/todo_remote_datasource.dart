@@ -10,8 +10,7 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRemoteDataSource {
   final http.Client _client;
-  // TODO: Replace this with the URL we provide you
-  final String baseUrl = 'https://6825aa0f0f0188d7e72ddd9a.mockapi.io/api/v1';
+  final String baseUrl = 'https://68346e5b464b49963602ccb5.mockapi.io';
 
   TodoRemoteDataSource(this._client);
 
@@ -32,9 +31,14 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title) async {
+  Future<TodoDTO> addTodo(String title, String? description, String? imageUrl) async {
     try {
-      final newTodo = {'title': title, 'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000};
+      final newTodo = {
+        'title': title,
+        'description': description,
+        'imageUrl': imageUrl,
+        'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
@@ -58,6 +62,51 @@ class TodoRemoteDataSource {
     } catch (e) {
       log('Error adding todo: $e');
       throw Exception('Failed to create todo: $e');
+    }
+  }
+
+  Future<void> deleteTodo(String id) async {
+    try {
+      final response = await _client.delete(Uri.parse('$baseUrl/todo/$id'));
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error deleting todo: $e');
+      throw Exception('Failed to delete todo: $e');
+    }
+  }
+
+  Future<TodoDTO> updateTodoStatus(String id, bool isDone) async {
+    try {
+      final newTodo = {'isDone': isDone};
+
+      log('Updating todo status: ${json.encode(newTodo)}');
+
+      final response = await _client.patch(
+        Uri.parse('$baseUrl/todo/$id'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(newTodo),
+      );
+
+      log('Response status: ${response.statusCode}');
+      log('Response body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        // If the API response is not in the expected format, transform it
+        return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to update todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error updating todo: $e');
+      throw Exception('Failed to update todo: $e');
     }
   }
 

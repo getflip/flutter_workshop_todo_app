@@ -10,6 +10,10 @@ _$TodoModelImpl _$$TodoModelImplFromJson(Map<String, dynamic> json) =>
     _$TodoModelImpl(
       id: json['id'] as String,
       title: json['title'] as String,
+      isFavourite: json['isFavourite'] as bool,
+      description: json['description'] as String?,
+      imageUrl: json['imageUrl'] as String?,
+      isDone: json['isDone'] as bool?,
       createdAt:
           json['createdAt'] == null
               ? null
@@ -20,5 +24,9 @@ Map<String, dynamic> _$$TodoModelImplToJson(_$TodoModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'isFavourite': instance.isFavourite,
+      'description': instance.description,
+      'imageUrl': instance.imageUrl,
+      'isDone': instance.isDone,
       'createdAt': instance.createdAt?.toIso8601String(),
     };

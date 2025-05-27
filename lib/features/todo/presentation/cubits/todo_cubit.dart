@@ -9,6 +9,8 @@ part 'todo_state.dart';
 class TodoCubit extends Cubit<TodoState> {
   final TodoRepository _repository;
 
+  TodosLoaded get loaded => state as TodosLoaded;
+
   TodoCubit(this._repository) : super(TodosLoading());
 
   Future<void> loadTodos() async {
@@ -21,10 +23,48 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(String title, String? description, String? imageUrl) async {
     try {
       emit(TodosLoading());
-      await _repository.addTodo(title);
+      await _repository.addTodo(title, description, imageUrl);
+      await loadTodos();
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> updateTodoStatus(String id, bool isDone) async {
+    try {
+      final updatedTodo = await _repository.updateTodoStatus(id, isDone);
+
+      if (updatedTodo != null) {
+        emit(TodosLoaded(todos: loaded.todos.map((todo) => todo.id == id ? updatedTodo : todo).toList()));
+      }
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> toggleTodoFavourite(String id) async {
+    try {
+      TodoModel? currentTodo = loaded.todos.firstWhere((todo) => todo.id == id);
+
+      final updatedFavorite = await _repository.toggleTodoFavourite(id);
+
+      if (updatedFavorite == null) return;
+
+      TodoModel updatedTodo = currentTodo.copyWith(isFavourite: updatedFavorite);
+
+      emit(TodosLoaded(todos: loaded.todos.map((todo) => todo.id == id ? updatedTodo : todo).toList()));
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> deleteTodo(String id) async {
+    try {
+      emit(TodosLoading());
+      await _repository.deleteTodo(id);
       await loadTodos();
     } catch (e) {
       emit(TodosError(message: e.toString()));
