@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/models/todo_model.dart';
@@ -10,6 +11,8 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRepository {
   final TodoRemoteDataSource remoteDataSource;
+  static const String _favouritePrefix = 'favourite_';
+  static const String _favouritesList = 'favourites_list';
 
   TodoRepository(this.remoteDataSource);
 
@@ -49,6 +52,37 @@ class TodoRepository {
     } catch (e) {
       log('update todo [id:$id] [isDone:$isDone], : $e');
     }
+  }
+
+  Future<Set<String>> getFavouriteIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    final favouritesList = prefs.getStringList(_favouritesList) ?? [];
+    return Set<String>.from(favouritesList);
+  }
+
+  Future<void> addFavourite(String todoId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('$_favouritePrefix$todoId', true);
+
+    final favouritesList = prefs.getStringList(_favouritesList) ?? [];
+    if (!favouritesList.contains(todoId)) {
+      favouritesList.add(todoId);
+      await prefs.setStringList(_favouritesList, favouritesList);
+    }
+  }
+
+  Future<void> removeFavourite(String todoId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('$_favouritePrefix$todoId');
+
+    final favouritesList = prefs.getStringList(_favouritesList) ?? [];
+    favouritesList.remove(todoId);
+    await prefs.setStringList(_favouritesList, favouritesList);
+  }
+
+  Future<bool> isFavourite(String todoId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('$_favouritePrefix$todoId') ?? false;
   }
 
   // Helper method to map DTOs to domain models

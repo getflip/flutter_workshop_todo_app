@@ -15,7 +15,9 @@ class TodoCubit extends Cubit<TodoState> {
     try {
       emit(TodosLoading());
       final todos = await _repository.getTodos();
-      emit(TodosLoaded(todos: todos));
+      final favouriteIds = await _repository.getFavouriteIds();
+
+      emit(TodosLoaded(todos: todos, favouriteIds: favouriteIds));
     } catch (e) {
       emit(TodosError(message: e.toString()));
     }
@@ -36,13 +38,14 @@ class TodoCubit extends Cubit<TodoState> {
       // Optimistic update - update UI immediately
       if (state is TodosLoaded) {
         final currentTodos = (state as TodosLoaded).todos;
+        final favouriteTodos = (state as TodosLoaded).favouriteIds;
         final updatedTodos = currentTodos.map((todo) {
           if (todo.id == id) {
             return todo.copyWith(isDone: isDone);
           }
           return todo;
         }).toList();
-        emit(TodosLoaded(todos: updatedTodos));
+        emit(TodosLoaded(todos: updatedTodos, favouriteIds: favouriteTodos));
       }
 
       // Make API call
@@ -55,5 +58,34 @@ class TodoCubit extends Cubit<TodoState> {
       await loadTodos();
       emit(TodosError(message: e.toString()));
     }
+  }
+
+  Future<void> toggleFavourite(String todoId) async {
+    final currentState = state;
+    if (currentState is! TodosLoaded) return;
+
+    try {
+      final newFavouriteIds = Set<String>.from(currentState.favouriteIds);
+      if (newFavouriteIds.contains(todoId)) {
+        newFavouriteIds.remove(todoId);
+        await _repository.removeFavourite(todoId);
+      } else {
+        newFavouriteIds.add(todoId);
+        await _repository.addFavourite(todoId);
+      }
+
+      emit(TodosLoaded(todos: currentState.todos, favouriteIds: newFavouriteIds));
+    } catch (e) {
+      emit(TodosError(message: 'Failed to update favourite: $e'));
+      loadTodos();
+    }
+  }
+
+  bool isFavourite(String todoId) {
+    final currentState = state;
+    if (currentState is TodosLoaded) {
+      return currentState.favouriteIds.contains(todoId);
+    }
+    return false;
   }
 }
