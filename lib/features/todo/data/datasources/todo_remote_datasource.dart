@@ -10,13 +10,13 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRemoteDataSource {
   final http.Client _client;
-  final String baseUrl = 'https://68346d42464b49963602c7e1.mockapi.io/api/v1';
+  final String baseUrl = 'https://68346d42464b49963602c7e1.mockapi.io';
 
   TodoRemoteDataSource(this._client);
 
   Future<List<TodoDTO>> getTodos() async {
     try {
-      final response = await _client.get(Uri.parse('$baseUrl/todos'));
+      final response = await _client.get(Uri.parse('$baseUrl/todo'));
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = json.decode(response.body);
@@ -41,7 +41,7 @@ class TodoRemoteDataSource {
       log('Sending todo: ${json.encode(newTodo)}');
 
       final response = await _client.post(
-        Uri.parse('$baseUrl/todos'),
+        Uri.parse('$baseUrl/todo'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(newTodo),
       );
