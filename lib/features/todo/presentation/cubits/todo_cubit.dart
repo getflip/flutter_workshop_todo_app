@@ -21,11 +21,35 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(
+    String title,
+    String? description,
+    String? imageUrl,
+  ) async {
     try {
       emit(TodosLoading());
-      await _repository.addTodo(title);
+      await _repository.addTodo(title, description, imageUrl);
       await loadTodos();
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> updateStatus(String id, bool isDone) async {
+    try {
+      await _repository.updateStatus(id, isDone);
+
+      // optimistic update to prevent reloading and rendering the entire list
+      if (state is TodosLoaded) {
+        final updatedItems =
+            (state as TodosLoaded).todos.map((item) {
+              return item.id == id ? item.copyWith(isDone: isDone) : item;
+            }).toList();
+
+        emit(TodosLoaded(todos: updatedItems));
+      } else {
+        loadTodos();
+      }
     } catch (e) {
       emit(TodosError(message: e.toString()));
     }

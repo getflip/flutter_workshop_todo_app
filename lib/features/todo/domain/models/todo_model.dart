@@ -8,8 +8,14 @@ part 'todo_model.g.dart';
 class TodoModel with _$TodoModel {
   const TodoModel._();
 
-  const factory TodoModel({required String id, required String title, DateTime? createdAt}) =
-      _TodoModel;
+  const factory TodoModel({
+    required String id,
+    required String title,
+    required bool isDone,
+    String? description,
+    String? imageUrl,
+    DateTime? createdAt,
+  }) = _TodoModel;
 
   DateTime get effectiveCreatedAt => createdAt ?? DateTime.now();
 
@@ -18,5 +24,6 @@ class TodoModel with _$TodoModel {
     return dateFormat.format(effectiveCreatedAt);
   }
 
-  factory TodoModel.fromJson(Map<String, dynamic> json) => _$TodoModelFromJson(json);
+  factory TodoModel.fromJson(Map<String, dynamic> json) =>
+      _$TodoModelFromJson(json);
 }

@@ -10,8 +10,12 @@ class TodoDTO with _$TodoDTO {
   const factory TodoDTO({
     required String id,
     required String title,
+    required bool isDone,
+    String? description,
+    String? imageUrl,
     int? createdAtSeconds,
   }) = _TodoDTO;
 
-  factory TodoDTO.fromJson(Map<String, dynamic> json) => _$TodoDTOFromJson(json);
+  factory TodoDTO.fromJson(Map<String, dynamic> json) =>
+      _$TodoDTOFromJson(json);
 }

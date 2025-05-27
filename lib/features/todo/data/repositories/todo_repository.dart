@@ -23,7 +23,9 @@ class TodoRepository {
       final todos = remoteDtos.map(_mapDtoToModel).toList();
 
       // Sort todos by creation date (newest first)
-      todos.sort((a, b) => b.effectiveCreatedAt.compareTo(a.effectiveCreatedAt));
+      todos.sort(
+        (a, b) => b.effectiveCreatedAt.compareTo(a.effectiveCreatedAt),
+      );
 
       return todos;
     } catch (e) {
@@ -34,12 +36,25 @@ class TodoRepository {
   }
 
   // Add a new todo remotely
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(
+    String title,
+    String? description,
+    String? imageUrl,
+  ) async {
     try {
       // Add todo remotely
-      await remoteDataSource.addTodo(title);
+      await remoteDataSource.addTodo(title, description, imageUrl);
     } catch (e) {
       log('Error adding remote todo: $e');
+    }
+  }
+
+  // Toggle a todo as done/to do
+  Future<void> updateStatus(String id, bool isDone) async {
+    try {
+      await remoteDataSource.updateStatus(id, isDone);
+    } catch (e) {
+      log('Error toggling remote todo: $e');
     }
   }
 
@@ -48,13 +63,27 @@ class TodoRepository {
     try {
       DateTime? createdAt;
       if (dto.createdAtSeconds != null) {
-        createdAt = DateTime.fromMillisecondsSinceEpoch(dto.createdAtSeconds! * 1000);
+        createdAt = DateTime.fromMillisecondsSinceEpoch(
+          dto.createdAtSeconds! * 1000,
+        );
       }
 
-      return TodoModel(id: dto.id, title: dto.title, createdAt: createdAt);
+      return TodoModel(
+        id: dto.id,
+        title: dto.title,
+        isDone: dto.isDone,
+        description: dto.description,
+        imageUrl: dto.imageUrl,
+        createdAt: createdAt,
+      );
     } catch (e) {
       log('Error mapping DTO to model: $e');
-      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now());
+      return TodoModel(
+        id: const Uuid().v4(),
+        title: 'Unknown title',
+        isDone: false,
+        createdAt: DateTime.now(),
+      );
     }
   }
 }
