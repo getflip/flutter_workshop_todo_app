@@ -87,6 +87,21 @@ class TodoRemoteDataSource {
     }
   }
 
+  Future<void> deleteTodo(String todoId) async {
+    try {
+      final response = await _client.delete(
+        Uri.parse('$baseUrl/todo/$todoId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        throw Exception('Failed to delete todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error deleting todo: $e');
+      throw Exception('Failed to delete todo: $e');
+    }
+  }
+
   // For local client-side ID generation
   String generateId() {
     return const Uuid().v4();

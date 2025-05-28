@@ -50,6 +50,10 @@ class TodoDetailsScreen extends StatelessWidget {
               onFavouriteChanged: (value) {
                 todoCubit.toggleTodoFavourite(todo.id, value);
               },
+              onDelete: () async {
+                await todoCubit.deleteTodo(todo.id);
+                if (context.mounted) Navigator.pop(context);
+              },
             );
           } else if (state is TodosError) {
             return Center(

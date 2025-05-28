@@ -7,6 +7,7 @@ class TodoItemDetails extends StatelessWidget {
   final bool isFavourited;
   final ValueChanged<bool?> onCheckboxChanged;
   final ValueChanged<bool> onFavouriteChanged;
+  final VoidCallback? onDelete;
 
   const TodoItemDetails({
     super.key,
@@ -14,6 +15,7 @@ class TodoItemDetails extends StatelessWidget {
     required this.isFavourited,
     required this.onCheckboxChanged,
     required this.onFavouriteChanged,
+    this.onDelete,
   });
 
   @override
@@ -50,6 +52,11 @@ class TodoItemDetails extends StatelessWidget {
                     onFavouriteChanged(!isFavourited);
                   },
                   tooltip: isFavourited ? 'Unfavourite' : 'Favourite',
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: onDelete,
+                  tooltip: 'Delete',
                 ),
               ],
             ),

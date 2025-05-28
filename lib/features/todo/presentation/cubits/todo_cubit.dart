@@ -24,7 +24,6 @@ class TodoCubit extends Cubit<TodoState> {
 
   Future<void> loadTodos() async {
     try {
-      emit(TodosLoading());
       final todos = await _repository.getTodos();
       final favouritedIds = await _getFavouritedIds();
       emit(TodosLoaded(todos: todos, favouritedIds: favouritedIds));
@@ -55,6 +54,16 @@ class TodoCubit extends Cubit<TodoState> {
   Future<void> toggleTodoFavourite(String todoId, bool isFavourited) async {
     try {
       await _repository.toggleTodoFavourite(todoId, isFavourited);
+      await loadTodos();
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> deleteTodo(String todoId) async {
+    try {
+      emit(TodosLoading());
+      await _repository.deleteTodo(todoId);
       await loadTodos();
     } catch (e) {
       emit(TodosError(message: e.toString()));
