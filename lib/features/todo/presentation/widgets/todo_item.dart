@@ -6,12 +6,16 @@ class TodoItem extends StatelessWidget {
   final TodoModel todo;
   final ValueChanged<bool?> onCheckboxChanged;
   final VoidCallback onViewDetails;
+  final bool isFavourited;
+  final ValueChanged<bool> onFavouriteChanged;
 
   const TodoItem({
     super.key,
     required this.todo,
     required this.onCheckboxChanged,
     required this.onViewDetails,
+    required this.isFavourited,
+    required this.onFavouriteChanged,
   });
 
   @override
@@ -43,6 +47,16 @@ class TodoItem extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    isFavourited ? Icons.star : Icons.star_border,
+                    color: isFavourited ? Colors.amber : Colors.grey,
+                  ),
+                  onPressed: () {
+                    onFavouriteChanged(!isFavourited);
+                  },
+                  tooltip: isFavourited ? 'Unfavourite' : 'Favourite',
                 ),
               ],
             ),

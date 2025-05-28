@@ -23,6 +23,7 @@ class TodoDetailsScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is TodosLoaded) {
             final todos = state.todos;
+            final favouritedIds = state.favouritedIds;
 
             if (todos.isEmpty) {
               return const Center(
@@ -34,10 +35,20 @@ class TodoDetailsScreen extends StatelessWidget {
               );
             }
 
+            final todo = todos[index];
+            final isFavourited = favouritedIds.contains(todo.id);
+
             return TodoItemDetails(
-              todo: todos[index],
+              todo: todo,
+              isFavourited: isFavourited,
               onCheckboxChanged: (value) {
-                todoCubit.toggleTodoCompletion(todos[index].id, value ?? false);
+                todoCubit.toggleTodoCompletion(
+                  todo.id,
+                  value ?? false,
+                );
+              },
+              onFavouriteChanged: (value) {
+                todoCubit.toggleTodoFavourite(todo.id, value);
               },
             );
           } else if (state is TodosError) {

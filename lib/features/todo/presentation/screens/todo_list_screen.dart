@@ -22,6 +22,7 @@ class TodoListScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is TodosLoaded) {
             final todos = state.todos;
+            final favouritedIds = state.favouritedIds;
 
             if (todos.isEmpty) {
               return const Center(
@@ -36,26 +37,30 @@ class TodoListScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: todos.length,
               itemBuilder: (context, index) {
+                final todo = todos[index];
+                final isFavourited = favouritedIds.contains(todo.id);
                 return TodoItem(
-                  todo: todos[index],
-                  onCheckboxChanged:
-                      (value) => {
-                        todoCubit.toggleTodoCompletion(
-                          todos[index].id,
-                          value ?? false,
-                        ),
-                      },
+                  todo: todo,
+                  onCheckboxChanged: (value) {
+                    todoCubit.toggleTodoCompletion(
+                      todo.id,
+                      value ?? false,
+                    );
+                  },
                   onViewDetails: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder:
-                            (context) => BlocProvider.value(
-                              value: todoCubit,
-                              child: TodoDetailsScreen(index: index),
-                            ),
+                        builder: (context) => BlocProvider.value(
+                          value: todoCubit,
+                          child: TodoDetailsScreen(index: index),
+                        ),
                       ),
                     );
+                  },
+                  isFavourited: isFavourited,
+                  onFavouriteChanged: (value) {
+                    todoCubit.toggleTodoFavourite(todo.id, value);
                   },
                 );
               },

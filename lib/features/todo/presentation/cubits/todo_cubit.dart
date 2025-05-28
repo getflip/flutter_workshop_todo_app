@@ -11,11 +11,23 @@ class TodoCubit extends Cubit<TodoState> {
 
   TodoCubit(this._repository) : super(TodosLoading());
 
+  Future<Set<String>> _getFavouritedIds() async {
+    final todos = await _repository.getTodos();
+    final ids = <String>{};
+    for (final todo in todos) {
+      if (await _repository.isTodoFavourited(todo.id)) {
+        ids.add(todo.id);
+      }
+    }
+    return ids;
+  }
+
   Future<void> loadTodos() async {
     try {
       emit(TodosLoading());
       final todos = await _repository.getTodos();
-      emit(TodosLoaded(todos: todos));
+      final favouritedIds = await _getFavouritedIds();
+      emit(TodosLoaded(todos: todos, favouritedIds: favouritedIds));
     } catch (e) {
       emit(TodosError(message: e.toString()));
     }
@@ -34,8 +46,16 @@ class TodoCubit extends Cubit<TodoState> {
   Future<void> toggleTodoCompletion(String todoId, bool isDone) async {
     try {
       await _repository.toggleTodoCompletion(todoId, isDone);
-      final todos = await _repository.getTodos();
-      emit(TodosLoaded(todos: todos));
+      await loadTodos();
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> toggleTodoFavourite(String todoId, bool isFavourited) async {
+    try {
+      await _repository.toggleTodoFavourite(todoId, isFavourited);
+      await loadTodos();
     } catch (e) {
       emit(TodosError(message: e.toString()));
     }

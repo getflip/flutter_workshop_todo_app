@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_todo_workshop/features/todo/data/datasources/todo_local_datasource.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,8 +11,9 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRepository {
   final TodoRemoteDataSource remoteDataSource;
+  final TodoLocalDataSource localDataSource;
 
-  TodoRepository(this.remoteDataSource);
+  TodoRepository(this.remoteDataSource, this.localDataSource);
 
   // Get todos from remote data source only
   Future<List<TodoModel>> getTodos() async {
@@ -53,6 +55,28 @@ class TodoRepository {
       await remoteDataSource.toggleTodoCompletion(todoId, isDone);
     } catch (e) {
       log('Error toggling todo completion: $e');
+    }
+  }
+
+  Future<void> toggleTodoFavourite(String todoId, bool isFavourited) async {
+    try {
+      // Toggle favourite status locally
+      final newStatus = await localDataSource.toggleFavourite(todoId);
+      log('Todo $todoId favourite status changed to: $newStatus');
+    } catch (e) {
+      log('Error toggling todo favourite status: $e');
+    }
+  }
+
+  // Check if a todo is favourited
+  Future<bool> isTodoFavourited(String todoId) async {
+    try {
+      // Check favourite status locally
+      final isFavourite = localDataSource.isFavourite(todoId);
+      return isFavourite;
+    } catch (e) {
+      log('Error checking todo favourite status: $e');
+      return false;
     }
   }
 

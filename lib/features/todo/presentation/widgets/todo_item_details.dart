@@ -4,12 +4,16 @@ import '../../domain/models/todo_model.dart';
 
 class TodoItemDetails extends StatelessWidget {
   final TodoModel todo;
+  final bool isFavourited;
   final ValueChanged<bool?> onCheckboxChanged;
+  final ValueChanged<bool> onFavouriteChanged;
 
   const TodoItemDetails({
     super.key,
     required this.todo,
+    required this.isFavourited,
     required this.onCheckboxChanged,
+    required this.onFavouriteChanged,
   });
 
   @override
@@ -36,6 +40,16 @@ class TodoItemDetails extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    isFavourited ? Icons.star : Icons.star_border,
+                    color: isFavourited ? Colors.amber : Colors.grey,
+                  ),
+                  onPressed: () {
+                    onFavouriteChanged(!isFavourited);
+                  },
+                  tooltip: isFavourited ? 'Unfavourite' : 'Favourite',
                 ),
               ],
             ),
