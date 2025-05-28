@@ -11,6 +11,9 @@ _$TodoDTOImpl _$$TodoDTOImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       title: json['title'] as String,
       createdAtSeconds: (json['createdAtSeconds'] as num?)?.toInt(),
+      isDone: json['isDone'] as bool,
+      description: json['description'] as String,
+      imageUrl: json['imageUrl'] as String,
     );
 
 Map<String, dynamic> _$$TodoDTOImplToJson(_$TodoDTOImpl instance) =>
@@ -18,4 +21,7 @@ Map<String, dynamic> _$$TodoDTOImplToJson(_$TodoDTOImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'createdAtSeconds': instance.createdAtSeconds,
+      'isDone': instance.isDone,
+      'description': instance.description,
+      'imageUrl': instance.imageUrl,
     };

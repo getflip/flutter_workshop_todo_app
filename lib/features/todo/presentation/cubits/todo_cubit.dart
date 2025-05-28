@@ -21,13 +21,51 @@ class TodoCubit extends Cubit<TodoState> {
     }
   }
 
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(String title, String description, String imageUrl) async {
     try {
       emit(TodosLoading());
-      await _repository.addTodo(title);
+      await _repository.addTodo(title, description, imageUrl);
       await loadTodos();
     } catch (e) {
       emit(TodosError(message: e.toString()));
+    }
+  }
+
+  Future<void> updateTodo(bool isDone, String id) async {
+    try {
+      await _repository.updateDoneState(id, isDone);
+      if (state is TodosLoaded) {
+        final updatedItems =
+        (state as TodosLoaded).todos.map((item) {
+          return item.id == id ? item.copyWith(isDone: isDone) : item;
+        }).toList();
+
+        emit(TodosLoaded(todos: updatedItems));
+      } else {
+        loadTodos();
+      }
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+      throw Exception('error while updating done state');
+    }
+  }
+
+  Future<void> deleteTodo(String id) async {
+    try {
+      await _repository.deleteTodo(id);
+      if (state is TodosLoaded) {
+        final updatedItems =
+        (state as TodosLoaded).todos.map((item) {
+          return item.id == id ? null : item;
+        }).nonNulls.toList();
+
+        emit(TodosLoaded(todos: updatedItems));
+      } else {
+        loadTodos();
+      }
+    } catch (e) {
+      emit(TodosError(message: e.toString()));
+      throw Exception('error while deleting todo');
     }
   }
 }

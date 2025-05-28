@@ -11,6 +11,9 @@ class TodoDTO with _$TodoDTO {
     required String id,
     required String title,
     int? createdAtSeconds,
+    required bool isDone,
+    required String description,
+    required String imageUrl,
   }) = _TodoDTO;
 
   factory TodoDTO.fromJson(Map<String, dynamic> json) => _$TodoDTOFromJson(json);
