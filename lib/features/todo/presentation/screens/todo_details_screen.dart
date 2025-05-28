@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_todo_workshop/features/todo/presentation/screens/todo_details_screen.dart';
+import 'package:flutter_todo_workshop/features/todo/presentation/widgets/todo_item_details.dart';
 
 import '../cubits/todo_cubit.dart';
-import '../widgets/todo_item.dart';
 import 'todo_form_screen.dart';
 
-class TodoListScreen extends StatelessWidget {
-  const TodoListScreen({super.key});
+class TodoDetailsScreen extends StatelessWidget {
+  final int index;
+
+  const TodoDetailsScreen({super.key, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -34,35 +35,24 @@ class TodoListScreen extends StatelessWidget {
               );
             }
 
-            return ListView.builder(
-              itemCount: todos.length,
-              itemBuilder: (context, index) {
-                final todo = todos[index];
-                final isFavourited = favouritedIds.contains(todo.id);
-                return TodoItem(
-                  todo: todo,
-                  onCheckboxChanged: (value) {
-                    todoCubit.toggleTodoCompletion(
-                      todo.id,
-                      value ?? false,
-                    );
-                  },
-                  onViewDetails: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BlocProvider.value(
-                          value: todoCubit,
-                          child: TodoDetailsScreen(index: index),
-                        ),
-                      ),
-                    );
-                  },
-                  isFavourited: isFavourited,
-                  onFavouriteChanged: (value) {
-                    todoCubit.toggleTodoFavourite(todo.id, value);
-                  },
+            final todo = todos[index];
+            final isFavourited = favouritedIds.contains(todo.id);
+
+            return TodoItemDetails(
+              todo: todo,
+              isFavourited: isFavourited,
+              onCheckboxChanged: (value) {
+                todoCubit.toggleTodoCompletion(
+                  todo.id,
+                  value ?? false,
                 );
+              },
+              onFavouriteChanged: (value) {
+                todoCubit.toggleTodoFavourite(todo.id, value);
+              },
+              onDelete: () async {
+                await todoCubit.deleteTodo(todo.id);
+                if (context.mounted) Navigator.pop(context);
               },
             );
           } else if (state is TodosError) {

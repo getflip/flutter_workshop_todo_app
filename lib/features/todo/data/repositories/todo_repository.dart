@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_todo_workshop/features/todo/data/datasources/todo_local_datasource.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,8 +11,9 @@ import '../models/todo_dto.dart';
 @injectable
 class TodoRepository {
   final TodoRemoteDataSource remoteDataSource;
+  final TodoLocalDataSource localDataSource;
 
-  TodoRepository(this.remoteDataSource);
+  TodoRepository(this.remoteDataSource, this.localDataSource);
 
   // Get todos from remote data source only
   Future<List<TodoModel>> getTodos() async {
@@ -23,7 +25,9 @@ class TodoRepository {
       final todos = remoteDtos.map(_mapDtoToModel).toList();
 
       // Sort todos by creation date (newest first)
-      todos.sort((a, b) => b.effectiveCreatedAt.compareTo(a.effectiveCreatedAt));
+      todos.sort(
+        (a, b) => b.effectiveCreatedAt.compareTo(a.effectiveCreatedAt),
+      );
 
       return todos;
     } catch (e) {
@@ -34,12 +38,55 @@ class TodoRepository {
   }
 
   // Add a new todo remotely
-  Future<void> addTodo(String title) async {
+  Future<void> addTodo(String title, String description) async {
     try {
       // Add todo remotely
-      await remoteDataSource.addTodo(title);
+      await remoteDataSource.addTodo(title, description);
     } catch (e) {
       log('Error adding remote todo: $e');
+    }
+  }
+
+  // Toggle the completion status of a todo
+  Future<void> toggleTodoCompletion(String todoId, bool isDone) async {
+    try {
+      // Toggle completion status remotely
+      log('Toggling todo completion: $todoId, isDone: $isDone');
+      await remoteDataSource.toggleTodoCompletion(todoId, isDone);
+    } catch (e) {
+      log('Error toggling todo completion: $e');
+    }
+  }
+
+  Future<void> toggleTodoFavourite(String todoId, bool isFavourited) async {
+    try {
+      // Toggle favourite status locally
+      final newStatus = await localDataSource.toggleFavourite(todoId);
+      log('Todo $todoId favourite status changed to: $newStatus');
+    } catch (e) {
+      log('Error toggling todo favourite status: $e');
+    }
+  }
+
+  // Check if a todo is favourited
+  Future<bool> isTodoFavourited(String todoId) async {
+    try {
+      // Check favourite status locally
+      final isFavourite = localDataSource.isFavourite(todoId);
+      return isFavourite;
+    } catch (e) {
+      log('Error checking todo favourite status: $e');
+      return false;
+    }
+  }
+
+  // Delete a todo remotely
+  Future<void> deleteTodo(String todoId) async {
+    try {
+      await remoteDataSource.deleteTodo(todoId);
+    } catch (e) {
+      log('Error deleting todo: $e');
+      // Optionally rethrow or handle error
     }
   }
 
@@ -48,13 +95,29 @@ class TodoRepository {
     try {
       DateTime? createdAt;
       if (dto.createdAtSeconds != null) {
-        createdAt = DateTime.fromMillisecondsSinceEpoch(dto.createdAtSeconds! * 1000);
+        createdAt = DateTime.fromMillisecondsSinceEpoch(
+          dto.createdAtSeconds! * 1000,
+        );
       }
 
-      return TodoModel(id: dto.id, title: dto.title, createdAt: createdAt);
+      return TodoModel(
+        id: dto.id,
+        title: dto.title,
+        description: dto.description,
+        imageUrl: dto.imageUrl,
+        isDone: dto.isDone,
+        createdAt: createdAt,
+      );
     } catch (e) {
       log('Error mapping DTO to model: $e');
-      return TodoModel(id: const Uuid().v4(), title: 'Unknown title', createdAt: DateTime.now());
+      return TodoModel(
+        id: const Uuid().v4(),
+        title: 'Unknown title',
+        description: 'Unknown description',
+        imageUrl: 'no image',
+        isDone: false,
+        createdAt: DateTime.now(),
+      );
     }
   }
 }

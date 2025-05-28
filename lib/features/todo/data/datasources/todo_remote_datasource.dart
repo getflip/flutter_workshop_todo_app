@@ -11,7 +11,7 @@ import '../models/todo_dto.dart';
 class TodoRemoteDataSource {
   final http.Client _client;
   // TODO: Replace this with the URL we provide you
-  final String baseUrl = 'https://6825aa0f0f0188d7e72ddd9a.mockapi.io/api/v1';
+  final String baseUrl = 'https://683469d6464b49963602b8e8.mockapi.io';
 
   TodoRemoteDataSource(this._client);
 
@@ -32,9 +32,13 @@ class TodoRemoteDataSource {
     }
   }
 
-  Future<TodoDTO> addTodo(String title) async {
+  Future<TodoDTO> addTodo(String title, String description) async {
     try {
-      final newTodo = {'title': title, 'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000};
+      final newTodo = {
+        'title': title,
+        'description': description,
+        'createdAtSeconds': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      };
 
       log('Sending todo: ${json.encode(newTodo)}');
 
@@ -58,6 +62,43 @@ class TodoRemoteDataSource {
     } catch (e) {
       log('Error adding todo: $e');
       throw Exception('Failed to create todo: $e');
+    }
+  }
+
+  Future<TodoDTO> toggleTodoCompletion(String todoId, bool isDone) async {
+    try {
+      final response = await _client.put(
+        Uri.parse('$baseUrl/todo/$todoId'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'isDone': isDone}),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        // If the API response is not in the expected format, transform it
+        return TodoDTO.fromJson(responseData);
+      } else {
+        throw Exception('Failed to create todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error toggling todo completion: $e');
+      throw Exception('Failed to toggle todo completion: $e');
+    }
+  }
+
+  Future<void> deleteTodo(String todoId) async {
+    try {
+      final response = await _client.delete(
+        Uri.parse('$baseUrl/todo/$todoId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        throw Exception('Failed to delete todo: ${response.statusCode}');
+      }
+    } catch (e) {
+      log('Error deleting todo: $e');
+      throw Exception('Failed to delete todo: $e');
     }
   }
 
